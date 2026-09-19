@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Location Test</title>
+</head>
+
+<body>
+  <h2>آزمایش موقعیت مکانی</h2>
+
+  <p>با زدن دکمه زیر، مرورگر از شما اجازه دسترسی به موقعیت می‌خواهد.</p>
+
+  <button onclick="getLocation()">اجازه دسترسی به مکان</button>
+
+  <pre id="result"></pre>
+
+<script>
+function getLocation() {
+  const result = document.getElementById("result");
+
+  if (!navigator.geolocation) {
+    result.textContent = "مرورگر از Location پشتیبانی نمی‌کند.";
+    return;
+  }
+
+  result.textContent = "در انتظار اجازه شما...";
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const accuracy = position.coords.accuracy;
+
+      result.textContent =
+        "موقعیت دریافت شد!\n\n" +
+        "Latitude: " + lat + "\n" +
+        "Longitude: " + lon + "\n" +
+        "دقت تقریبی: ±" + Math.round(accuracy) + " متر\n\n" +
+        "https://www.google.com/maps?q=" + lat + "," + lon;
+    },
+
+    function(error) {
+      result.textContent =
+        "دسترسی به موقعیت انجام نشد.\n" +
+        error.message;
+    },
+
+    {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 0
+    }
+  );
+}
+</script>
+
+</body>
+</html>
